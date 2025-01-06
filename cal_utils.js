@@ -34,9 +34,11 @@ class Calendar {
         let data;
 
         if (eventType === "events" && !this.eventsIsLoaded) {
+            this.events = [];
             targetList = this.events;
         }
         else if (eventType === "finished" && !this.finishedIsLoaded) {
+            this.finished = [];
             targetList = this.finished;
         }
         else {
@@ -206,7 +208,7 @@ class Calendar {
         }
     }
 
-
+/*
     listEvents(options) {
 
         this.loadEvents();
@@ -249,6 +251,61 @@ class Calendar {
 
             console.error("Error: Events not loaded.");
         }
+    }
+*/
+
+    listEvents(options) {
+        this.loadEvents();
+
+        if (!this.eventsIsLoaded) {
+            console.error("Error: Events not loaded.");
+            return;
+        }
+
+        let dateOf;
+
+        try {
+
+            if (!options.date) {
+
+                dateOf = new Date().toISOString().split('T')[0];
+
+            } else {
+
+                const parsedDate = new Date(options.date);
+
+                if (isNaN(parsedDate.getTime())) {
+
+                    throw new Error('Invalid date format');
+
+                }
+
+                dateOf = parsedDate.toISOString().split('T')[0];
+            }
+        } catch (error) {
+
+            console.error("Error: Invalid date format. Please use YYYY-MM-DD format.");
+            return;
+        }
+
+        // Filter and sort events for the specified date
+        const eventsOf = this.events.filter(event => event.date === dateOf);
+
+        if (eventsOf.length === 0) {
+            console.log(`No events found for ${dateOf}`);
+            return;
+        }
+
+        // Sort events by time
+        eventsOf.sort((a, b) => a.time.localeCompare(b.time));
+
+        // Print events with a header
+        console.log(`\nEvents for ${dateOf}:`);
+        console.log('------------------------');
+        for (const event of eventsOf) {
+            console.log(`${event.time} - ${event.title}`);
+        }
+        console.log('------------------------\n');
     }
 
 

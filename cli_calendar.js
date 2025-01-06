@@ -60,5 +60,3 @@ program.command('list')
   });
 
 program.parse();
-
-process.exit(0);
