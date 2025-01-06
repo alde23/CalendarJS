@@ -203,7 +203,11 @@ class Calendar {
 
         } else {
 
-            console.error("Error: Year or month must be specified.");
+            let currentYear = new Date().getFullYear();
+
+            for (let m = 1; m <= 12; m++) {
+                textCalendar.printCalendar(currentYear, m);
+            }
 
         }
     }
