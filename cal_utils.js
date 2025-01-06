@@ -68,11 +68,9 @@ class Calendar {
 
 
     addEvent(title, date, options) {
-
         this.loadEvents();
 
         if (this.eventsIsLoaded) {
-
             for (const event of this.events) {
                 if (event.title === title && event.date === date) {
                     console.error("Error: Event with same title and date already exists.");
@@ -88,6 +86,8 @@ class Calendar {
 
             let newEvent = new Event(title, date, description, time, notification);
             this.events.push(newEvent);
+
+            this.updateDB();
             return;
 
         } else {
@@ -96,7 +96,6 @@ class Calendar {
             return;
 
         }
-
 
     }
     
@@ -120,12 +119,17 @@ class Calendar {
             if (!toDelete) {
                 this.finished.push(eventTbf);
             }
+
+            this.updateDB();
+            return;
         }
         else {
 
             console.error("Error: Events not loaded.");
+            return;
 
         }
+
     }
 
 
@@ -161,9 +165,13 @@ class Calendar {
                 eventTbm.notification = options.notification;
             }
 
+            this.updateDB();
+            return;
+
         } else {
 
             console.error("Error: Events not loaded.");
+            return;
 
         }
     }
@@ -239,28 +247,49 @@ class Calendar {
 
 
     updateDB() {
+
         if (this.eventsIsLoaded) {
+
             const eventsData = { events: this.events };
             const eventsString = JSON.stringify(eventsData, null, 4);
 
-            fs.writeFileSync('data/events.json', eventsString, 'utf8', (err) => {
-                if (err) throw err;
+            try {
+
+                fs.writeFileSync('data/events.json', eventsString, 'utf8');
                 console.log('Events file updated!');
-            });
+
+            } catch (err) {
+
+                console.error("Error saving events to file.", err);
+
+            }
+
         } else {
+
             console.error("Error: Events not loaded when updating.");
+
         }
 
         if (this.finishedIsLoaded) {
-            const finishedData = { events: this.finished };
+
+            const finishedData = { finished: this.finished };
             const finishedString = JSON.stringify(finishedData, null, 4);
 
-            fs.writeFileSync('data/finished.json', finishedString, 'utf8', (err) => {
-                if (err) throw err;
+            try {
+
+                fs.writeFileSync('data/finished.json', finishedString, 'utf8');
                 console.log('Finished events file updated!');
-            });
+
+            } catch (err) {
+
+                console.error("Error saving finished events to file.", err);
+
+            }
+
         } else {
+
             console.error("Error: Finished events not loaded when updating.");
+
         }
     }
 
