@@ -48,8 +48,14 @@ class Calendar {
 
             const eventsFile = fs.readFileSync(fileName, 'utf8');
             data = JSON.parse(eventsFile);
-            targetList.push(...data.events);
-            
+
+            if (eventType === "events") {
+                targetList.push(...data.events);
+            }
+            else {
+                targetList.push(...data.finished);
+            }
+
             if (eventType === "events") {
                 this.eventsIsLoaded = true;
             }
