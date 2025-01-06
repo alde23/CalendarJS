@@ -208,51 +208,6 @@ class Calendar {
         }
     }
 
-/*
-    listEvents(options) {
-
-        this.loadEvents();
-        let eventsOf;
-        let dateOf;
-
-        if (this.eventsIsLoaded) {
-
-            if (!options.date) {
-
-                dateOf = new Date().toISOString().split('T')[0];
-
-            }
-
-            else {
-
-                dateOf = options.date;
-
-            }
-
-            eventsOf = this.events.filter(event => event.date === dateOf);
-
-            if (eventsOf.length === 0) {
-
-                console.log("No events for this date");
-                return;
-
-            }
-
-            // Sort events by time
-            eventsOf.sort((a, b) => a.time.localeCompare(b.time));
-
-            for (const event of eventsOf) {
-
-                console.log(`${event.time} - ${event.title}`);
-
-            }
-
-        } else {
-
-            console.error("Error: Events not loaded.");
-        }
-    }
-*/
 
     listEvents(options) {
         this.loadEvents();
