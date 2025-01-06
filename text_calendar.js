@@ -4,11 +4,9 @@ function printCalendar(year, month) {
     let calendar = `    ${date.toLocaleString('default', { month: 'long' })} ${year}\n`;
     calendar += days.join(' ') + '\n';
   
-    // Get the first day of the month and the total number of days
     const firstDay = date.getDay();
     const daysInMonth = new Date(year, month, 0).getDate();
   
-    // Print empty spaces for the first row before the 1st
     let row = '   '.repeat(firstDay);
   
     for (let day = 1; day <= daysInMonth; day++) {
